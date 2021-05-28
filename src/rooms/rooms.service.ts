@@ -19,6 +19,15 @@ export class RoomsService {
     return {
       id,
       name: 'Ленинград',
+      floor: 2,
+      capacity: 10,
+      hasConference: true,
+      coordinates: {
+        lx: 1,
+        ly: 0,
+        rx: 10,
+        ry: 11,
+      },
     };
   }
 
