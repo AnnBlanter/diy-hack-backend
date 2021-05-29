@@ -22,7 +22,7 @@ class Coordinates {
    * @example 10
    */
   ry: number;
-};
+}
 
 export class Room {
   /**

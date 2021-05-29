@@ -1,7 +1,25 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+/*
 import { CreateRoomDto } from './dto/create-room.dto';
 import { UpdateRoomDto } from './dto/update-room.dto';
+ */
 import { Room } from './entities/room.entity';
+import { RoomDb } from './entities/roomDb.entity';
+
+const convert = ({ rx, ry, lx, ly, id, ...room }: RoomDb): Room => {
+  return {
+    id: String(id),
+    ...room,
+    coordinates: {
+      rx,
+      ry,
+      lx,
+      ly,
+    },
+  };
+};
 
 @Injectable()
 export class RoomsService {
@@ -10,25 +28,31 @@ export class RoomsService {
     return 'This action adds a new room';
   }
    */
+  constructor(
+    @InjectRepository(RoomDb)
+    private roomsRepository: Repository<RoomDb>,
+  ) {}
 
-  findAll(): Room[] {
-    return [];
+  findAll(): Promise<Room[]> {
+    return this.roomsRepository
+      .find()
+      .then((result) => result.map((roomDb) => convert(roomDb)));
   }
 
-  findOne(id: string): Room {
-    return {
-      id,
-      name: 'Ленинград',
-      floor: 2,
-      capacity: 10,
-      hasConference: true,
-      coordinates: {
-        lx: 1,
-        ly: 0,
-        rx: 10,
-        ry: 11,
-      },
-    };
+  findOne(id: string): Promise<Room> {
+    return this.roomsRepository.findOne(Number(id)).then((roomDb) => {
+      if (roomDb === undefined) {
+        throw new HttpException(
+          {
+            status: HttpStatus.NOT_FOUND,
+            error: 'Room not found',
+          },
+          HttpStatus.NOT_FOUND,
+        );
+      }
+
+      return convert(roomDb);
+    });
   }
 
   /*
