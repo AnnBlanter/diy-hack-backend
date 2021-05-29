@@ -50,4 +50,6 @@ export class Room {
   hasConference: boolean;
 
   coordinates: Coordinates;
+
+  type: string;
 }

@@ -8,15 +8,39 @@ import { UpdateRoomDto } from './dto/update-room.dto';
 import { Room } from './entities/room.entity';
 import { RoomDb } from './entities/roomDb.entity';
 
-const convert = ({ rx, ry, lx, ly, id, ...room }: RoomDb): Room => {
+const mapSize = 10000;
+
+const adaptPercent = (percent: number, value: number): number =>
+  percent * mapSize || value;
+
+const convert = ({
+  rx,
+  ry,
+  lx,
+  ly,
+  id,
+  rxperc,
+  ryperc,
+  lxperc,
+  lyperc,
+  name,
+  floor,
+  capacity,
+  hasConference,
+  type,
+}: RoomDb): Room => {
   return {
     id: String(id),
-    ...room,
+    name,
+    floor,
+    capacity,
+    hasConference,
+    type,
     coordinates: {
-      rx,
-      ry,
-      lx,
-      ly,
+      rx: adaptPercent(rxperc, rx),
+      ry: adaptPercent(ryperc, ry),
+      lx: adaptPercent(lxperc, lx),
+      ly: adaptPercent(lyperc, ly),
     },
   };
 };
