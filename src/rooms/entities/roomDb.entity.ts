@@ -43,4 +43,7 @@ export class RoomDb {
   
   @Column()
   type: string;
+  
+   @Column()
+  isFixed: boolean;
 }
