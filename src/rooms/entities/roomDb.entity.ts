@@ -28,4 +28,19 @@ export class RoomDb {
 
   @Column()
   ry: number;
+ 
+  @Column()
+  lxperc: number;
+
+  @Column()
+  lyperc: number;
+
+  @Column()
+  rxperc: number;
+
+  @Column()
+  ryperc: number;
+  
+  @Column()
+  type: string;
 }
